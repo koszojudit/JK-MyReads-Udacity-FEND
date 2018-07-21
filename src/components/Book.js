@@ -1,6 +1,23 @@
-import React from 'react'
+import React, {Component} from 'react'
 
-class Book extends React.Component {
+class Book extends Component {
+  state = {
+    shelf: 'none'
+  }
+
+  changeBookShelf = (event) => {
+    this.setState({
+      shelf: event.target.value
+    })
+    this.props.onUpdateBook(this.props.book, event.target.value)
+  }
+
+  componentDidMount() {
+    const { book } = this.props;
+    if(book.shelf) {
+      this.setState({ shelf: book.shelf })
+    }
+  }
 
   render() {
 
@@ -17,7 +34,7 @@ class Book extends React.Component {
           <div className="book-top">
             <div className="book-cover" style={style}></div>
               <div className="book-shelf-changer">
-                <select>
+                <select onChange={this.changeBookShelf} value={this.state.shelf}>
                   <option value="move" disabled>Move to...</option>
                   <option value="currentlyReading">Currently Reading</option>
                   <option value="wantToRead">Want to Read</option>
